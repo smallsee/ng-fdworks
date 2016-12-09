@@ -5,15 +5,18 @@
     .service('UserService',[
       '$state',
       '$http',
-      function($state,$http){
+      'toastr',
+      function($state,$http,toastr){
         var me = this;
         me.signup_data = {};
         me.login_data = {};
         me.data = {};
+        me.signup_data.avatar = 'avatar.jpg';
 
         me.sendSms = function(){
           console.log('s');
         };
+
         me.read = function(param){
           return $http.post('api/user/read',param)
             .then(function(r){
@@ -36,6 +39,9 @@
 
               if (r.data.status){
                 me.signup_data = {};
+                toastr.success('注册成功!', {
+                  closeButton: true
+                });
                 $state.go('login');
               }
 
@@ -48,11 +54,13 @@
           $http.post('api/login',me.login_data)
             .then(function(r){
 
-              console.log(r);
               if (r.data.status){
                 location.href = '/';
               }
               else{
+                toastr.error(r.data.msg, {
+                  closeButton: true
+                });
                 me.login_failed = true;
               }
 
@@ -96,13 +104,22 @@
     .controller('SignupController',[
       '$scope',
       'UserService',
-      function($scope,UserService){
+      'Upload',
+      function($scope,UserService,Upload){
         $scope.User = UserService;
         $scope.phone_or_email = 1 ;
-        $('#btnCrop').click(function(){
-          var avatar_url = $('.username_avatar').attr('src');
-          UserService.signup_data.avatar = avatar_url;
-        });
+        $scope.more_data  = false;
+
+        $scope.show_data = function(){
+          $scope.more_data = !$scope.more_data;
+        }
+
+       $scope.upload = function (file) {
+
+         Upload.dataUrl(file, true).then(function(url){UserService.signup_data.avatar=url; });
+
+       }
+
 
         $scope.$watch(function(){
           return UserService.signup_data;

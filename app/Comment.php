@@ -68,24 +68,24 @@ class Comment extends Model
     if (rq('video_id')){
       $video = video_ins()->find(rq('video_id'));
       if (!$video) return err('video is not exists');
-      $data = $this->where('video_id',rq('video_id'))->with('user')->get();
+      $data = $this->orderBy('created_at','desc')->where('video_id',rq('video_id'))->with('user')->get();
     }else if (rq('book_id')){
       $book = book_ins()->find(rq('book_id'));
       if (!$book) return err('book is not exists');
-      $data = $this->where('book_id',rq('book_id'))->with('user')->get();
+      $data = $this->orderBy('created_at','desc')->where('book_id',rq('book_id'))->with('user')->get();
     }else if (rq('tea_id')){
       $tea = tea_ins()->find(rq('tea_id'));
       if (!$tea) return err('tea is not exists');
-      $data = $this->where('tea_id',rq('tea_id'))->with('user')->get();
+      $data = $this->orderBy('created_at','desc')->where('tea_id',rq('tea_id'))->with('user')->get();
     }else{
       $res = res_ins()->find(rq('res_id'));
       if (!$res) return err('res is not exists');
-      $data = $this->where('res_id',rq('res_id'))->with('user')->get();
+      $data = $this->orderBy('created_at','desc')->where('res_id',rq('res_id'))->with('user')->get();
     }
 
     if (!$data->first())
       return err('comment is not exists');
-    return success(['data'=>$data->keyBy('id')]);
+    return success(['data'=>$data]);
   }
 
   //    删除api

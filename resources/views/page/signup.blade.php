@@ -168,18 +168,77 @@
 
       </div>
 
-      <div class="col-md-offset-3 col-md-3">
+      <div class="col-md-12 hr"></div>
+
+      <div class="col-md-offset-4 col-md-4">
+        <button style="margin-bottom: 20px;" type="button" class="btn  btn-lg btn-block"
+          ng-class="more_data ? 'btn-default' : 'btn-primary' "
+          ng-click="show_data()"
+        >是否完善信息</button>
+      </div>
 
 
-        <div>[: User.signup_validateCode_right :]</div>
-        <div>[: User.signup_username_exists :]</div>
-        <button class="btn "
+      <div ng-if="more_data">
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="signup_form.nickname.$touched ? signup_form.nickname.$invalid   ? 'has-error' : 'has-success' : 'has-warning'"
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">昵称:</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="inputSuccess3"
+                   name="nickname"
+                   ng-model="User.signup_data.nickname"
+                   placeholder="昵称"
+                   required
+            >
+            <span class="glyphicon  form-control-feedback "
+                  ng-class="signup_form.nickname.$touched ? signup_form.nickname.$invalid  ? 'glyphicon-remove' : 'glyphicon-ok' : 'glyphicon-asterisk'"
+            ></span>
+
+          </div>
+          <div ng-if="signup_form.nickname.$touched" class="col-md-4">
+            <div style="line-height: 0px;" ng-if="signup_form.nickname.$error.required" class="alert alert-danger" role="alert">昵称为必填项</div>
+          </div>
+        </div>
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="signup_form.nickname.$touched ? signup_form.nickname.$invalid   ? 'has-error' : 'has-success' : 'has-warning'"
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">用户头像:</label>
+
+          <div class="col-md-6">
+            <img ngf-select="upload($file)" ng-src="[: User.signup_data.avatar :]" alt="..." class="img-thumbnail" width="140px" height="140px">
+          </div>
+        </div>
+
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="signup_form.info.$touched ? signup_form.info.$invalid   ? 'has-error' : 'has-success' : 'has-warning'"
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">用户简介:</label>
+          <div class="col-md-6">
+            <textarea name="info"
+                      ng-model="User.signup_data.info" required cols="63" rows="5">
+
+            </textarea>
+
+
+          </div>
+          <div ng-if="signup_form.info.$touched" class="col-md-4">
+            <div style="line-height: 0px;" ng-if="signup_form.info.$error.required" class="alert alert-danger" role="alert">用户简介为必填项</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom: 20px;" class="col-md-12 hr"></div>
+
+
+        <button class="btn btn-lg btn-block"
                 ng-disabled="signup_form.$invalid || User.signup_validateCode_right || User.signup_username_exists" ng-click="User.signup()"
                 ng-class="signup_form.$invalid || User.signup_validateCode_right || User.signup_username_exists ? 'btn-default' : 'btn-info' "
 
         >注册</button>
 
-      </div>
+
+
 
     </form>
 

@@ -1,12 +1,12 @@
-#book_list{
+.book_list{
   width:1200px;
   margin: 4px auto;
-  border: 1px solid rgba(152,144,144,0.5);
+  border: 1px solid rgba(255,255,255,0.82);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background-color: #1b2433;
   overflow: hidden;
-
+  margin-bottom: 0;
   .book_list_left{
     float: left;
     background-color: #1b2433;
@@ -60,17 +60,70 @@
 
       .content_image{
 
-        cursor: pointer;
+
         width: 98%;
       }
       img{
         border: 4px solid #D3EEF5;
         width: 100%;
+        cursor: pointer;
+      }
+
+      .hide_thing{
+        border: 1px dashed black;
+        width: 98%;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
       }
     }
   }
 }
+//用户
+.book_commit{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  margin-top: 0;
+  .book_list_right{
+    .content{
+      min-height: 250px;
+      position: relative;
+    }
+    .content_commit{
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}
+/*编辑遮罩*/
+.book_list_mask{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0,0,0,0.8);
+  z-index:200;
+  left: 0;
+  top: 0;
 
+  .commit_add{
+    border: 3px solid #b1aeae;
+    margin-top: 150px;
+    padding: 10px;
+  }
+  .commit_add_button{
+    margin-top: 20px;
+  }
+}
 
 /**/
 
@@ -95,19 +148,20 @@
   height:100%;
   background: url("../icon/transparent.png") repeat left top ;
 }
+#G-lightbox-popup .lightbox-pic-view{overflow: hidden}
 #G-lightbox-popup .lightbox-pic-view .lightbox-prev-btn{left:0;}
 #G-lightbox-popup .lightbox-pic-view .lightbox-next-btn{right:0;}
 #G-lightbox-popup .lightbox-pic-view .lightbox-prev-btn-show{background: url("../icon/prev.png") no-repeat left center;cursor: pointer}
 #G-lightbox-popup .lightbox-pic-view .lightbox-next-btn-show{background: url("../icon/next.png") no-repeat right center;cursor: pointer}
 #G-lightbox-popup .lightbox-pic-view .lightbox-image{display: block}
 
-#G-lightbox-popup .lightbox-pic-caption{margin:0 5px;position: relative;background-color: rgba(0,0,0,0.5);margin-top:-85px;z-index: 2;background: url("../icon/opacity.png") repeat left top;
+#G-lightbox-popup .lightbox-pic-caption{margin:0 5px;position: relative;background-color: rgba(0,0,0,0.5);margin-top:-55px;z-index: 2;background: url("../icon/opacity.png") repeat left top;width: 98.5%;
 }
 #G-lightbox-popup .lightbox-pic-caption .lightbox-caption-area{
  color:#fff;
 }
 #G-lightbox-popup .lightbox-pic-caption .lightbox-caption-area .lightbox-of-index{color:#999;}
 #G-lightbox-popup .lightbox-pic-caption .lightbox-close-btn{
-  position: absolute;top:13px;right:13px;width:27px;height:27px;background: url("../icon/close.png") no-repeat center center;
+  position: absolute;top:13px;right:20px;width:27px;height:27px;background: url("../icon/close.png") no-repeat center center;
 }
 

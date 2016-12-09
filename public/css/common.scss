@@ -4,9 +4,22 @@
 //  -moz-box-sizing: border-box;
 //  word-wrap: break-word
 //}
+/*重置*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+ol,ul{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'' ;}
+abbr,acronym{border:0;}
+body{color:#666; background-color:#fff;font: 12px/1.5 '微软雅黑',tahoma,arial,'Hiragino Sans GB',宋体,sans-serif;}
+
 body{
   line-height: 1.5;
   font-size: 16px;
+
 }
 form,
 label{
@@ -21,6 +34,10 @@ button{
   font-size: 14px;
   line-height: 1.2;
 }
+li{
+  list-style: none;
+}
+
 input,button{
   padding: 5px;
 }

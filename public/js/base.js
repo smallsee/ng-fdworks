@@ -9,6 +9,8 @@
     'ui.router',
     'ngDialog',
     'toastr',
+    'ngFileUpload',
+    'textAngular',
     'user',
     'videoAdd',
     'home',
@@ -66,7 +68,17 @@
     .controller('CommonController',[
       '$scope',
       '$location',
-      function($scope,$location){
+      'toastr',
+      function($scope,$location,toastr){
+
+
+        $scope.place_load = function(){
+          toastr.error('请用户登录在执行此操作。', {
+            closeButton: true
+          });
+        };
+
+
 
 
         $scope.$watch(function(){

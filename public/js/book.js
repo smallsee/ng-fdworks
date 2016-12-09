@@ -148,15 +148,11 @@
         //页面滚动时加载数据
         $win = $(window);
         $win.on('scroll',function(){
-
           $win.scrollTop();
-
             if ($win.scrollTop() - ($(document).height()-$win.height()) > -30){
               BookService.get();
             }
-
-            mainBox_height();
-
+          mainBox_height()
         })
 
       }
@@ -170,13 +166,14 @@
 
 })();
 
-
 function mainBox_height(){
   var $lastBox = $('#book-mainBox .book-box').last();
-  var lastBoxDis = $lastBox.offset().top+Math.floor($lastBox.outerHeight()/2);
-  $('#book-mainBox').height(lastBoxDis + 20) ;
-}
+  if ($lastBox.length > 0){
+    var lastBoxDis = $lastBox.offset().top+Math.floor($lastBox.outerHeight()/2);
+    $('#book-mainBox').height(lastBoxDis + 20) ;
+  }
 
+}
 function waterfall(){
   var main = $('#book-mainBox');
   var $boxs = $('#book-mainBox .book-box');
@@ -206,3 +203,6 @@ function waterfall(){
     }
   });
 }
+
+
+

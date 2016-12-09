@@ -13,12 +13,16 @@
   <link rel="stylesheet" href="{{asset('/node_modules/nprogress/nprogress.css')}}">
   <link rel="stylesheet" href="{{asset('/node_modules/bootstrap/dist/css/bootstrap.css')}}">
   <link rel="stylesheet" href="{{asset('/node_modules/bootstrap/dist/css/bootstrap-theme.css')}}">
+  <link rel="stylesheet" href="{{asset('/node_modules/textangular/dist/textAngular.css')}}">
+  <link rel="stylesheet" href="{{asset('/node_modules/font-awesome/css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('/node_modules/nivo-slider.css') }}">
   <link rel="stylesheet" href="{{asset('/css/iconfont.css')}}">
   <link rel="stylesheet" href="{{asset('/css/common.css')}}">
   <link rel="stylesheet" href="{{asset('/css/animate.min.css')}}">
   <link rel="stylesheet" href="{{asset('/css/base.css')}}">
   <link rel="stylesheet" href="{{asset('/css/book.css')}}">
   <link rel="stylesheet" href="{{asset('/css/book_list.css')}}">
+  <link rel="stylesheet" href="{{asset('/css/home.css')}}">
 
   <script src="{{asset('/node_modules/jquery/dist/jquery.js')}}"></script>
   <script src="{{asset('/node_modules/angular/angular.js')}}"></script>
@@ -27,7 +31,16 @@
   <script src="{{asset('/node_modules/ng-dialog/js/ngDialog.js')}}"></script>
   <script src="{{asset('/node_modules/angular-toastr/dist/angular-toastr.js')}}"></script>
   <script src="{{asset('/node_modules/nprogress/nprogress.js')}}"></script>
+  <script src="{{asset('/node_modules/ng-file-upload/dist/ng-file-upload-shim.js')}}"></script>
+  <script src="{{asset('/node_modules/ng-file-upload/dist/ng-file-upload.js')}}"></script>
+  <script src="{{asset('/node_modules/textangular/dist/textAngular-rangy.min.js')}}"></script>
+  <script src="{{asset('/node_modules/textangular/dist/textAngular-sanitize.min.js')}}"></script>
+  <script src="{{asset('/node_modules/textangular/dist/textAngular.min.js')}}"></script>
   <script src="{{asset('/node_modules/picture.js') }}"></script>
+  <script src="{{ asset('/node_modules/jquery.nivo.slider.pack.js') }}"></script>
+  <script src="{{ asset('/node_modules/radialIndicator.js') }}"></script>
+  <script src="{{ asset('/node_modules/scrollViewByXiaohai.js') }}"></script>
+
   <script src="{{asset('/js/base.js')}}"></script>
   <script src="{{asset('/js/user.js')}}"></script>
   <script src="{{asset('/js/video.js')}}"></script>
@@ -36,8 +49,14 @@
   <script src="{{asset('/js/book_add.js')}}"></script>
   <script src="{{asset('/js/book_item.js')}}"></script>
   <script src="{{asset('/js/video_add.js')}}"></script>
+
+
+
+
 </head>
 <body>
+
+
 {{--登录--}}
 {{--<div class="login-mask">--}}
   {{--<div class="login-box">--}}
@@ -84,7 +103,7 @@
     </div>
     <div class="fr">
       @if(is_logged_in())
-        <a ui-sref="login" class="header-item">{{session('username')}}</a>
+        <a ui-sref="login" class="header-item" >{{session('username')}}</a>
         <a href="{{url('/api/logout')}}" class="header-item">登出</a>
       @else
         <a ui-sref="login" class="header-item">登录</a>
@@ -133,6 +152,14 @@
       })
     })
   }
+
+  var lightbox = new LightBox({
+    speed:300,
+    maxWidth:'auto',
+    maxHeight:'auto',
+    maskOpacity:0.5,
+    scalePic:1
+  });
 
 
 </script>

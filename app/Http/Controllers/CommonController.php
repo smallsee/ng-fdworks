@@ -17,10 +17,8 @@ class CommonController extends Controller
     public function image(){
 
 
-      return 's';
+
       $image = $_FILES['file'];
-
-
 
       // 需要填写你的 Access Key 和 Secret Key
       $accessKey = '-xpzbXEV0gDocV0_SsQFn-WYczH9kPQr27wtYQ_2';
@@ -47,4 +45,19 @@ class CommonController extends Controller
 
     }
 
+    public function eqSessionId(){
+      $id =rq();
+      foreach ($id as $key => $value){
+        $type_key = $key;
+        $type_id = $value;
+      }
+      $comment = comment_ins()->where($type_key,$type_id)->get();
+      foreach ($comment as $value){
+        if ($value['user_id'] == session('user_id'))
+          return success();
+      }
+
+      return err();
+
+    }
 }

@@ -186,6 +186,10 @@ Route::group(['middleware' => ['web']], function () {
    * 公用上传七牛图片类
    */
   Route::any('api/upload/image','CommonController@image');
+  /**
+   * 对比sessionId与对应id是否想通
+   */
+  Route::any('api/eq/sessionid','CommonController@eqSessionId');
 
   /**
    * home显示数据
