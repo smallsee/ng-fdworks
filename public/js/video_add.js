@@ -8,7 +8,8 @@
     .service('VideoAddService',[
       '$state',
       '$http',
-      function($state,$http){
+      'toastr',
+      function($state,$http,toastr){
 
           var me = this;
           me.video_data = {};
@@ -17,10 +18,32 @@
         me.add = function(){
           $http.post('api/video/add',me.video_data)
             .then(function(r){
-              if (r.data.status)
+              if (r.data.status){
                 $state.go('video');
-              else
-                dialog.error(r.data.msg[0]);
+                toastr.success('添加成功!', {
+                  closeButton: true
+                });
+              }else{
+                toastr.error('添加失败!'+r.data.msg, {
+                  closeButton: true
+                });
+              }
+
+
+
+            })
+        }
+        me.getToken = function(){
+          $http.post('api/get/token',{type:'fd-video'})
+            .then(function(r){
+              if (r.data.status){
+                me.qiniuToken = r.data.data.data;
+              }else{
+                toastr.error('获取签名失败!', {
+                  closeButton: true
+                });
+              }
+
             })
         }
 
@@ -30,52 +53,49 @@
     .controller('VideoAddController',[
       '$scope',
       'VideoAddService',
-      function($scope,VideoAddService,FileUploader){
+      'Upload',
+      'toastr',
+      function($scope,VideoAddService,Upload,toastr){
         $scope.Video = VideoAddService;
         $scope.tag = {};
+        $scope.progressBar = 0;
+        VideoAddService.getToken();
+        $scope.has_video = false;
 
 
-        var randNumber = Math.random() * 10000;
-        $scope.video_upload = function(files){
-          var Cts = files[0];
-          // if (Cts.type.indexOf("video") < 0  ){
-          //   dialog.error('最好上传mp4格式的视频')
-          //   return
-          // }
 
-          var fd = new FormData();
-          fd.append("file",Cts);
-          fd.append("token","-xpzbXEV0gDocV0_SsQFn-WYczH9kPQr27wtYQ_2:dvTrSQ1f3lSs8O3eCcJLCHKI1Zw=:eyJzY29wZSI6ImZkLXZpZGVvIiwiZGVhZGxpbmUiOjE0ODA0MzY2Mzd9");
-          fd.append("key","xiaohai-video"+randNumber);
-          var xhr = new XMLHttpRequest();
-          xhr.addEventListener('progress', function(e) {
-            var done = e.loaded || e.loaded, total = e.total || e.total;
-            console.log('xhr上传进度: ' + (Math.floor(done/total*1000)/10) + '%');
-          }, false);
-          if ( xhr.upload ) {
-            xhr.upload.onprogress = function(e) {
-              var done = e.loaded || e.loaded, total = e.total || e.total;
-              console.log('xhr.upload上传进度: ' + done + ' / ' + total + ' = ' + (Math.floor(done/total*1000)/10) + '%');
-              $('#progress_uploading').html( (Math.floor(done/total*1000)/10) + '%');
-              document.getElementById("progress").value = Math.floor(done/total*1000)/10;
-              if ((Math.floor(done/total*1000)/10) == 100 ){
-                VideoAddService.video_data.video_url = "http://ohae2zc8b.bkt.clouddn.com/xiaohai-video"+randNumber;
+        $scope.upload = function (file) {
+          Upload.dataUrl(file, true).then(function(url){  VideoAddService.video_data.thumb=url; VideoAddService.image_ok = true;});
+        }
+
+        $scope.uploadVideo = function (file) {
+          var randNumber = 'xiaohaiVideo' + Math.random() * 10000;
+          var upload = Upload.upload({
+            url:'http://upload.qiniu.com/',
+            data: {'file':file,'token':VideoAddService.qiniuToken,"key":randNumber},
+            method:'POST'
+          })
+          upload.xhr(function(xhr){
+            xhr.upload.addEventListener('progress',function(e){
+              $scope.progressBar = Math.floor(e.loaded/e.total* 100);
+              $('.videoUpload-progress').css({
+                width:$scope.progressBar+'%'
+              });
+              if ($scope.progressBar == 100){
+                VideoAddService.video_data.video_url = "http://ohae2zc8b.bkt.clouddn.com/" + randNumber;
+                $scope.has_video = true;
+                toastr.success('上传成功!', {
+                  closeButton: true
+                });
               }
-            };
-          }
-          xhr.onreadystatechange = function(e) {
-            if ( 4 == this.readyState ) {
-              console.log(['xhr upload complete', e]);
-            }
-          };
-          xhr.open('post', 'http://up.qiniu.com?', true);
-          xhr.send(fd);
-        };
+            })
+          });
+        }
+
 
         $scope.$watch(function(){
           return $scope.tag ;
         },function(n,o){
-
           var tags = '';
           angular.forEach($scope.tag,function(v,k){
             if (v)
@@ -85,8 +105,12 @@
 
           if (VideoAddService.video_data.tag.length>1){
             $scope.has_tag = true;
+          }else{
+            $scope.has_tag = false;
           }
+          console.log(VideoAddService.video_data)
         },true);
+
 
       }
     ]);

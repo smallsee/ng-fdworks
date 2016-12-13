@@ -170,3 +170,8 @@
 //    }
 //  }
 //}
+.add_data{
+  display: none;width: 800px;height: 450px;position: fixed;left: 50%;top: 50%;margin-left: -400px;margin-top: -275px;
+  background: url("../img/fast_post_bg.jpg") no-repeat;
+  z-index:5555;
+}

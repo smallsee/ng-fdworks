@@ -123,7 +123,7 @@
       function($scope,BookService){
         var $win;
         $scope.Book = BookService;
-        BookService.reset_state();
+
         BookService.get();
         //类型
         $scope.tags = [

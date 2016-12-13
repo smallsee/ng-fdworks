@@ -1,121 +1,127 @@
-<div class="video container" ng-controller="VideoAddController">
-  <div class="card">
+<div  ng-controller="VideoAddController">
 
 
 
-      <form name="videoAdd_form" ng-submit="Video.add()">
 
-        <div class="input-group">
-          <label>标题:</label>
-          <input name="title" type="text" ng-model="Video.video_data.title" required>
+      <form name="videoAdd_form" style="margin-top: 20px;" class="form-horizontal" role="form">
+
+
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="videoAdd_form.title.$touched ? videoAdd_form.title.$invalid   ? 'has-error' : 'has-success' : 'has-warning'"
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">标题:</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="inputSuccess3"
+                   name="title"
+                   ng-minlength="4"
+                   ng-maxlength="24"
+                   ng-model="Video.video_data.title"
+                   placeholder="标题"
+                   required
+            >
+            <span class="glyphicon  form-control-feedback "
+                  ng-class="videoAdd_form.title.$touched ? videoAdd_form.title.$invalid  ? 'glyphicon-remove' : 'glyphicon-ok' : 'glyphicon-asterisk'"
+            ></span>
+          </div>
+          <div ng-if="videoAdd_form.title.$touched" class="col-md-4">
+            <div style="line-height: 0px;" ng-if="videoAdd_form.title.$error.required" class="alert alert-danger" role="alert">标题为必填项</div>
+            <div style="line-height: 0px;" ng-if="videoAdd_form.title.$error.minlength ||
+          videoAdd_form.title.$error.maxlength" class="alert alert-danger" role="alert">标题长度需在4至24位之间</div>
+          </div>
         </div>
-        <div ng-if="videoAdd_form.title.$touched" class="input-err-set">
-          <div ng-if="videoAdd_form.title.$error.required">标题为必填项</div>
+
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="Video.image_ok ? 'has-success' : 'has-warning' "
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">用户头像:</label>
+          <div class="col-md-6">
+            <img width="140px" height="140px" class="img-thumbnail"
+                 ngf-select="upload($file)" ngf-drop="upload($file)" ng-src="[: Video.video_data.thumb :]"
+            >
+          </div>
+        </div>
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="has_tag ? 'has-success' : 'has-warning' "
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">标签:</label>
+          <div class="col-md-8">
+            <div class="checkbox">
+              <label class="col-md-1">
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.renqi" />人妻
+              </label>
+              <label class="col-md-1">
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.luoli" />萝莉
+              </label>
+              <label class="col-md-1">
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.zhifu" />制服
+              </label>
+              <label class="col-md-1">
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.chinv" />痴女
+              </label>
+              <label class="col-md-1">
+                <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.chushou" />触手
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="Video.image_ok ? 'has-success' : 'has-warning' "
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">用户头像:</label>
+          <div class="col-md-6">
+            <img width="140px" height="140px" class="img-thumbnail"
+                 ngf-select="uploadVideo($file)" ngf-drop="uploadVideo($file)" ng-src="avatar.jpg"
+            >
+            <div class="progress">
+              <div class="videoUpload-progress progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+              </div>
+              <div>[: progressBar :]</div>
+            </div>
+          </div>
         </div>
 
 
 
-        <div class="input-group">
-          <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.renqi" />人妻
-          <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.luoli" />萝莉
-          <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.zhifu" />制服
-          <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.chinv" />痴女
-          <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="tag.chushou" />触手
+        <div class="form-group  has-feedback  col-md-12 "
+             ng-class="Video.video_data.content.length>0 ? 'has-success' : 'has-warning' "
+        >
+          <label class="control-label col-md-2" for="inputSuccess3">内容:</label>
+          <div class="col-md-6">
+            <text-angular ng-model="Video.video_data.content" ></text-angular>
+          </div>
         </div>
 
-        <progress id="progress" value="0" max="100"></progress>
-        <input type="file" id="xiaohai_video" onchange="angular.element(this).scope().video_upload(this.files)">
+
+
+
+        <button class="btn btn-lg btn-block col-md-8 "
+                ng-disabled="videoAdd_form.$invalid || !has_tag  || !has_video || !Video.video_data.content.length>0 "
+                ng-click="Video.add()"
+                ng-class="videoAdd_form.$invalid || !has_tag || !has_video  || !Video.video_data.content.length>0  ? 'btn-default' : 'btn-info' "
+
+        >提交</button>
+
+        {{--<progress id="progress" value="0" max="100"></progress>--}}
+        {{--<input type="file" id="xiaohai_video" onchange="angular.element(this).scope().video_upload(this.files)">--}}
 
 
         {{--<textarea  id="video_content" ng-click="uploadVideo()"></textarea>--}}
 
-        <textarea ng-model="Video.video_data.content" required></textarea>
+        {{--<textarea ng-model="Video.video_data.content" required></textarea>--}}
 
-        <input type="submit" ng-disabled="videoAdd_form.$invalid || !has_tag"   value="提交">
       </form>
 
 
-
-  </div>
 </div>
-
-
-
-
 
 
 
 <script type="text/javascript">
 
-  $('#VideoUploading').hide();
-
-
-  var  video_url ='';
-  KindEditor.ready(function(K){
-    window.editor = K.create('#video_content',{
-      uploadJson : "{{asset('api/upload/image')}}",
-      afterBlur : function(){this.sync();} //
-    })
-  });
-
-
-  {{--$('#file_upload').uploadify({--}}
-    {{--'swf'      : "{{asset('uploadify.swf')}}",--}}
-    {{--'uploader' : "{{asset('api/upload/image')}}",--}}
-    {{--'buttonText': '上传图片',--}}
-    {{--'fileTypeDesc': 'Image Files',--}}
-    {{--'fileObjName' : 'imgFile',--}}
-    {{--//允许上传的文件后缀--}}
-    {{--'fileTypeExts': '*.gif; *.jpg; *.png',--}}
-    {{--'onUploadSuccess' : function(file,data,response) {--}}
-      {{--// response true ,false--}}
-      {{--if(response) {--}}
-        {{--var obj = JSON.parse(data); //由JSON字符串转换为JSON对象--}}
-        {{--$('#' + file.id).find('.data').html(' 上传完毕');--}}
-        {{--$("#upload_org_code_img").show();--}}
-        {{--$("#upload_org_code_img").attr('src',obj.url);--}}
-      {{--}else{--}}
-        {{--alert('上传失败');--}}
-      {{--}--}}
-    {{--}--}}
-  {{--});--}}
-
-
-//  function upload(){
-//    var Cts = $('#xiaohai_video')[0].files[0];
-//    if (Cts.type.indexOf("video") < 0  ){
-//      dialog.error('最好上传mp4格式的视频')
-//      return
-//    }
-//    var fd = new FormData();
-//    fd.append("file",$('#xiaohai_video')[0].files[0]);
-//    fd.append("token","-xpzbXEV0gDocV0_SsQFn-WYczH9kPQr27wtYQ_2:PATP7JrQ2CNNUokqLJqRDvFwYlc=:eyJzY29wZSI6ImZkLXZpZGVvIiwiZGVhZGxpbmUiOjE0ODAyNDY5ODN9");
-//    fd.append("key","xiaohai-video"+randNumber);
-//    var xhr = new XMLHttpRequest();
-//    xhr.addEventListener('progress', function(e) {
-//      var done = e.loaded || e.loaded, total = e.total || e.total;
-//      console.log('xhr上传进度: ' + (Math.floor(done/total*1000)/10) + '%');
-//    }, false);
-//    if ( xhr.upload ) {
-//      xhr.upload.onprogress = function(e) {
-//        var done = e.loaded || e.loaded, total = e.total || e.total;
-//        console.log('xhr.upload上传进度: ' + done + ' / ' + total + ' = ' + (Math.floor(done/total*1000)/10) + '%');
-//        $('#progress_uploading').html( (Math.floor(done/total*1000)/10) + '%');
-//        document.getElementById("progress").value = Math.floor(done/total*1000)/10;
-//        $('#VideoUploading').show().html((Math.floor(done/total*1000)/10) + '%')
-//        if ((Math.floor(done/total*1000)/10) == 100 ){
-//          $('#VideoUploading').removeClass('btn-warning').addClass('btn-success');
-//          video_url = "http://ohae2zc8b.bkt.clouddn.com/xiaohai-video"+randNumber;
-//        }
-//      };
-//    }
-//    xhr.onreadystatechange = function(e) {
-//      if ( 4 == this.readyState ) {
-//        console.log(['xhr upload complete', e]);
-//      }
-//    };
-//    xhr.open('post', 'http://up.qiniu.com?', true);
-//    xhr.send(fd);
-//  }
 
 </script>

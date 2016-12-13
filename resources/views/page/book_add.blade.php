@@ -99,6 +99,10 @@
                 <span class="glyphicon glyphicon-pencil"></span>
                 <span ng-click="image_remove($index)" class="glyphicon glyphicon-trash"></span>
               </div>
+              <div class="progress" style="margin-bottom: 0;height: 10px;margin-top: 5px;">
+                <div class="bookUpload-progress progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                </div>
+              </div>
             </div>
 
 

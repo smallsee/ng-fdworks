@@ -16,6 +16,8 @@ class Tea extends Authenticatable
     $title=rq('title');
     $content = rq('content');
     $tag = rq('tag');
+    $thumb = rq('thumb');
+    $tea_lists = rq('tea_lists');
     $all = rq();
 
     if (!is_logged_in())
@@ -25,6 +27,7 @@ class Tea extends Authenticatable
       'title'  => 'required',
       'content'  => 'required',
       'tag'  => 'required',
+      'thumb'  => 'required',
     );
     $messages = [
       'title.numeric'  => 'title must be number'
@@ -49,6 +52,8 @@ class Tea extends Authenticatable
     $this->title = $title;
     $this->content = $content;
     $this->tag = $tag;
+    $this->tea_lists = $tea_lists;
+    $this->thumb = $thumb;
     $this->user_id = session()->get('user_id');
     return $this->save() ? success(['id'=>$this->id])
       : err('db_insert_failed');

@@ -100,8 +100,14 @@ class Video extends Authenticatable
    */
     public function read(){
 
-      if (rq('id'))
-        return ['status'=>1,'data'=>$this->with('user')->find(rq('id'))];
+      if (rq('id')){
+        $video = $this->with('user')->find(rq('id'));
+        $see = $video->see;
+        $video->see = $see+1;
+        $video->save();
+        return ['status'=>1,'data'=>$video];
+      }
+
 
 
       $limit = rq('limit') ?: 15;

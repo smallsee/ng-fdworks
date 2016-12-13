@@ -160,6 +160,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('tpl/page/video/add',function(){
     return view('page.video_add');
   });
+  Route::get('tpl/page/video/item',function(){
+    return view('page.video_item');
+  });
 
   /**
    * 本子
@@ -172,6 +175,22 @@ Route::group(['middleware' => ['web']], function () {
   });
   Route::get('tpl/page/book/item',function(){
     return view('page.book_item');
+  });
+  /**
+   * 茶会
+   */
+  Route::get('tpl/page/tea',function(){
+    return view('page.tea');
+  });
+  Route::get('tpl/page/tea/add',function(){
+    return view('page.tea_add');
+  });
+  Route::get('tpl/page/tea/item',function(){
+    return view('page.tea_item');
+  });
+
+  Route::get('tpl/page/user',function(){
+    return view('page.user');
   });
 
   /**
@@ -190,6 +209,14 @@ Route::group(['middleware' => ['web']], function () {
    * 对比sessionId与对应id是否想通
    */
   Route::any('api/eq/sessionid','CommonController@eqSessionId');
+  /**
+   * 防止一天内多处评论相同视频
+   */
+  Route::any('api/many/commit','CommonController@manyCommit');
+  /**
+   * 获取上传token
+   */
+  Route::any('api/get/token','CommonController@getToken');
 
   /**
    * home显示数据
@@ -199,5 +226,20 @@ Route::group(['middleware' => ['web']], function () {
    * 本子页显示数据
    */
   Route::any('data/book/data','BookController@data');
+  /**
+   * 视频页显示数据
+   */
+  Route::any('data/video/data','VideoController@data');
+  Route::any('data/video/timedata','VideoController@timeData');
+  Route::any('data/video/typedata','VideoController@typeData');
+
+  /**
+   * 茶会显示页
+   */
+  Route::any('data/tea/data','TeaController@data');
+  /**
+   * 用户显示页
+   */
+  Route::any('data/user/data','UserController@data');
 
 });

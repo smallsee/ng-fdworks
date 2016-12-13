@@ -123,6 +123,7 @@ class User extends Authenticatable
       }
       session()->put('username',$user->nickname);
       session()->put('user_id',$user->id);
+      session()->put('user_avatar',$user->avatar);
       return success(['id'=>session('user_id'),'nickname'=>session('username')]);
     }
 

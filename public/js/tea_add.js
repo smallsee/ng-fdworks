@@ -1,34 +1,38 @@
 ;(function(){
 
 
-  'use strict';
-  angular.module('bookAdd',[])
-    .service('BookAddService',[
-      '$http',
-      '$state',
-      'toastr',
-      function($http,$state,toastr){
-        var me = this;
 
-        me.has_lists = false;
+  'use strict';
+  angular.module('teaAdd',[])
+
+    .service('TeaAddService',[
+      '$state',
+      '$http',
+      'toastr',
+      function($state,$http,toastr){
+
+          var me = this;
+          me.tea_data = {};
+
 
         me.add = function(){
-          $http.post('api/book/add',me.book_data)
+          $http.post('api/tea/add',me.tea_data)
             .then(function(r){
               if (r.data.status){
-                toastr.success('上传成功!', {
+                $state.go('tea');
+                toastr.success('添加成功!', {
                   closeButton: true
                 });
-                $state.go('book');
               }else{
-                toastr.error('上传失败: ' + r.data.msg, {
+                toastr.error('添加失败:' + r.data.msg, {
                   closeButton: true
                 });
               }
             })
         }
+
         me.getToken = function(){
-          $http.post('api/get/token',{type:'fd-book'})
+          $http.post('api/get/token',{type:'fd-tea'})
             .then(function(r){
               if (r.data.status){
                 me.qiniuToken = r.data.data.data;
@@ -40,65 +44,68 @@
 
             })
         }
+
+
+
       }
     ])
-    .controller('BookAddController',[
+    .controller('TeaAddController',[
       '$scope',
-      'BookAddService',
+      'TeaAddService',
       'Upload',
       'toastr',
-      function($scope,BookAddService,Upload,toastr){
-
-        $scope.Book = BookAddService;
-        BookAddService.book_data = {};
-        BookAddService.book_data.thumb = 'avatar.jpg';
-
+      function($scope,TeaAddService,Upload,toastr){
+        $scope.Tea = TeaAddService;
+        TeaAddService.tea_data = {};
         $scope.tag = {};
+        TeaAddService.tea_data.thumb = 'avatar.jpg';
+        TeaAddService.getToken();
 
-        $scope.book_lists = [];
-        $scope.book_lists_upload = [];
-        $scope.book_lists_upload_ok = [];
-        $scope.hasImage = false;
-        $scope.image_done = false;
-        BookAddService.getToken();
 
         $scope.upload = function (file) {
-          Upload.dataUrl(file, true).then(function(url){  BookAddService.book_data.thumb=url; BookAddService.image_ok = true;});
+          Upload.dataUrl(file, true).then(function(url){  TeaAddService.tea_data.thumb=url; TeaAddService.image_ok = true;});
         }
+
+
+        $scope.tea_lists = [];
+        $scope.tea_lists_upload = [];
+        $scope.tea_lists_upload_ok = [];
+        $scope.hasImage = false;
+        $scope.image_done = false;
+
 
         $scope.uploadFiles = function(files,errFiles){
           angular.forEach(files, function(file) {
-            $scope.book_lists_upload.push(file);
-            Upload.dataUrl(file, true).then(function(url){  $scope.book_lists.push(url);});
+            $scope.tea_lists_upload.push(file);
+            Upload.dataUrl(file, true).then(function(url){  $scope.tea_lists.push(url);});
           })
           $scope.hasImage = true;
         }
-
         $scope.image_remove = function(index){
-          var arr=$.grep($scope.book_lists,function(n,i){
-            return n!=$scope.book_lists[index]
+          var arr=$.grep($scope.tea_lists,function(n,i){
+            return n!=$scope.tea_lists[index]
           });
-          var arr_upload=$.grep($scope.book_lists_upload,function(n,i){
-            return n!=$scope.book_lists_upload[index]
+          var arr_upload=$.grep($scope.tea_lists_upload,function(n,i){
+            return n!=$scope.tea_lists_upload[index]
           });
 
-          $scope.book_lists = arr;
-          $scope.book_lists_upload = arr_upload;
-          console.log($scope.book_lists_upload)
+          $scope.tea_lists = arr;
+          $scope.tea_lists_upload = arr_upload;
+          console.log($scope.tea_lists_upload)
 
         }
         $scope.img_upload = function(){
-          if ( $scope.book_lists_upload.length < 1){
+          if ( $scope.tea_lists_upload.length < 1){
             toastr.error('上传不能为空!', {
               closeButton: true
             });
           }
-          angular.forEach($scope.book_lists_upload, function(file,index) {
+          angular.forEach($scope.tea_lists_upload, function(file,index) {
 
             var randNumber = 'xiaohaiVideo' + Math.random() * 10000;
             var upload = Upload.upload({
               url:'http://upload.qiniu.com/',
-              data: {'file':file,'token':BookAddService.qiniuToken,"key":randNumber},
+              data: {'file':file,'token':TeaAddService.qiniuToken,"key":randNumber},
               method:'POST'
             })
             upload.xhr(function(xhr){
@@ -109,7 +116,7 @@
                 });
                 if ($scope.progressBar == 100){
 
-                  $scope.book_lists_upload_ok.push('http://ohadc19qz.bkt.clouddn.com/'+randNumber);
+                  $scope.tea_lists_upload_ok.push('http://oi2tibqwd.bkt.clouddn.com/'+randNumber);
                   toastr.success('上传成功!', {
                     closeButton: true
                   });
@@ -117,17 +124,15 @@
               })
             }).finally(function(){
 
-                BookAddService.book_data.book_lists = angular.toJson($scope.book_lists_upload_ok);
-                console.log(BookAddService.book_data.book_lists);
-                $scope.image_done = true;
+              TeaAddService.tea_data.tea_lists = angular.toJson($scope.tea_lists_upload_ok);
+              console.log(TeaAddService.tea_data.tea_lists);
+              $scope.image_done = true;
             })
 
 
           })
 
         }
-
-
 
         $scope.$watch(function(){
           return $scope.tag ;
@@ -137,15 +142,18 @@
             if (v)
               tags +=k+',';
           });
-          BookAddService.book_data.tag = tags.substring(0,tags.length-1);
-          if (BookAddService.book_data.tag.length>1){
+          TeaAddService.tea_data.tag = tags.substring(0,tags.length-1);
+
+          if (TeaAddService.tea_data.tag.length>1){
             $scope.has_tag = true;
           }else{
             $scope.has_tag = false;
           }
-          console.log(BookAddService.book_data)
+          console.log(TeaAddService.tea_data)
         },true);
+
+
       }
-    ])
+    ]);
 
 })();

@@ -4,7 +4,7 @@
 
     {{--幻灯片--}}
 
-    <div id="new_book"  style="width: 100%;height: 500px; margin-top: 20px;">
+    <div id="new_book"  style="width: 100%;height: 500px; margin-top: 10px;">
       <ul class="hiSlider hiSlider1 clearfix">
         <li  class="hiSlider-item">
           <div class="scrollXiaohai-firstPic">
@@ -327,6 +327,23 @@ $('#new_book').ScrollXiaohai({
 
   }
 
+var proSpeed = 0;
+
+  function proTime() {
+    if (newPass) {
+      newPass = false;
+      window.proTimer = setInterval(function () {
+        proSpeed++;
+        radialObj.value(proSpeed);
+        if (proSpeed == 100) {
+          newPass = true;
+          $('.nivo-nextNav').click()
+        }
+      }, 30)
+    }
+  }
+
+
   $('#slider').nivoSlider({
     controlNav: true,
     animSpeed: 500,
@@ -362,21 +379,7 @@ $('#new_book').ScrollXiaohai({
     radius: 15
   });
 
-  var proSpeed = 0;
 
-  function proTime() {
-    if (newPass) {
-      newPass = false;
-      window.proTimer = setInterval(function () {
-        proSpeed++;
-        radialObj.value(proSpeed);
-        if (proSpeed == 100) {
-          newPass = true;
-          $('.nivo-nextNav').click()
-        }
-      }, 30)
-    }
-  }
 
 
 //分页
